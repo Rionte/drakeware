@@ -48,6 +48,7 @@ loadGameSection:AddDropdown({
 loadGameSection:AddButton({
     Name = "Add Game",
     Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/murdermystery.lua", true))()
         mainLibrary.unload()
     end
 })

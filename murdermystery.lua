@@ -254,7 +254,5 @@ GunFinderSection:AddButton({
             local lplayer = workspace:FindFirstChild(pname)
             lplayer.HumanoidRootPart.CFrame = workspace.GunDrop.CFrame
         end
-
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/murdermystery.lua", true))()
     end
 })
