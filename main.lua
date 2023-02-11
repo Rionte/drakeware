@@ -24,11 +24,7 @@ local GeneralTab = PepsisWorld:CreateTab({
 })
 
 local MMTab = PepsisWorld:CreateTab({
-    Name = "Murder Mystery"
-})
-
-local UnloadSection = GeneralTab:CreateSection({
-    Name = "Unload"
+    Name = "MM"
 })
 
 local FlySection = GeneralTab:CreateSection({
@@ -50,7 +46,11 @@ local SheriffFinderSection = MMTab:CreateSection({
 local GunFinderSection = MMTab:CreateSection({
     Name = "Gun Drop Finder"
 })
-    
+
+local UnloadSection = GeneralTab:CreateSection({
+    Name = "Unload"
+})
+
 UnloadSection:AddButton({
     Name = "Unload UI",
     Callback = function()
