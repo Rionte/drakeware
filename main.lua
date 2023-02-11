@@ -1,5 +1,5 @@
--- local library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/customui.lua"))()
+local library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
+-- local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/d.lua", true))()
 local Wait = library.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
 local pname = game.Players.LocalPlayer.Name
 local lplayer = workspace:FindFirstChild(pname)
@@ -17,9 +17,6 @@ local foundGun = false
 
 local PepsisWorld = library:CreateWindow({
     Name = "drakeware",
-    Themeable = {
-        Info = "Discord Server: VzYTJ7Y"
-    }
 })
 
 local GeneralTab = PepsisWorld:CreateTab({
@@ -28,6 +25,10 @@ local GeneralTab = PepsisWorld:CreateTab({
 
 local MMTab = PepsisWorld:CreateTab({
     Name = "Murder Mystery"
+})
+
+local UnloadSection = GeneralTab:CreateSection({
+    Name = "Unload"
 })
 
 local FlySection = GeneralTab:CreateSection({
@@ -50,6 +51,13 @@ local GunFinderSection = MMTab:CreateSection({
     Name = "Gun Drop Finder"
 })
     
+UnloadSection:AddButton({
+    Name = "Unload UI",
+    Callback = function()
+        library.unload()
+    end
+})
+
 FlySection:AddToggle({
     Name = "Fly",
     Keybind = 1,
