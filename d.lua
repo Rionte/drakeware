@@ -332,7 +332,7 @@ do
                   library.Backdrop.Visible = library_flags["__Designer.Background.UseBackgroundImage"] and true
                   library.Backdrop.Image = resolveid(library_flags["__Designer.Background.ImageAssetID"], "__Designer.Background.ImageAssetID") or ""
                   library.Backdrop.ImageColor3 = library_flags["__Designer.Background.ImageColor"] or Color3.new(1, 1, 1)
-                  library.Backdrop.ImageTransparency = 100 / 100
+                  library.Backdrop.ImageTransparency = (library_flags["__Designer.Background.ImageTransparency"] or 95) / 100
               end
           end)
       end
@@ -1619,7 +1619,7 @@ function library:CreateWindow(options, ...)
   innerBackdrop.ZIndex = -1
   innerBackdrop.Visible = library_flags["__Designer.Background.UseBackgroundImage"] and true
   innerBackdrop.ImageColor3 = library_flags["__Designer.Background.ImageColor"] or Color3.new(1, 1, 1)
-  innerBackdrop.ImageTransparency = (library_flags["__Designer.Background.ImageTransparency"] or 100) / 100
+  innerBackdrop.ImageTransparency = (library_flags["__Designer.Background.ImageTransparency"] or 95) / 100
   innerBackdrop.Image = resolveid(library_flags["__Designer.Background.ImageAssetID"], "__Designer.Background.ImageAssetID") or ""
   library.Backdrop = innerBackdrop
   tabsHolder.Name = "tabsHolder"
@@ -6903,8 +6903,8 @@ function library:CreateWindow(options, ...)
       }}, {"AddSlider", "__Designer.Slider.ImageTransparency", backgroundsection, {
           Name = "Image Transparency",
           Flag = "__Designer.Background.ImageTransparency",
-          Value = 100,
-          Min = 100,
+          Value = 95,
+          Min = 0,
           Max = 100,
           Format = "Image Transparency: %s%%",
           Textbox = true,
@@ -7216,4 +7216,4 @@ library.NewWindow = library.CreateWindow
 library.AddWindow = library.CreateWindow
 library.Window = library.CreateWindow
 library.W = library.CreateWindow
-return library, library_flags, library.subs  -  Server
+return library, library_flags, library.subs  -  Client
