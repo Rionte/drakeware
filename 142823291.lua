@@ -1,3 +1,5 @@
+-- Murder Mystery
+
 local library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
 local Wait = library.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
 local pname = game.Players.LocalPlayer.Name
@@ -13,7 +15,7 @@ local callOutToggle = false
 local foundGun = false
 
 local PepsisWorld = library:CreateWindow({
-    Name = "drakeware",
+    Name = "drakeware"
 })
 
 local GeneralTab = PepsisWorld:CreateTab({
@@ -21,7 +23,7 @@ local GeneralTab = PepsisWorld:CreateTab({
 })
 
 local MMTab = PepsisWorld:CreateTab({
-    Name = "MM"
+    Name = "Murder Mystery"
 })
 
 local FlySection = GeneralTab:CreateSection({
@@ -195,7 +197,6 @@ MurderFinderSection:AddToggle({
                 end
             end
 
-            print("MURDER")
             wait(0.2)
         end
 
@@ -230,8 +231,7 @@ SheriffFinderSection:AddToggle({
                 end
             end
 
-            print("SHERIFF")
-            wait(1)
+            wait(0.2)
         end
 
         if tempState == false then
@@ -260,7 +260,6 @@ GunFinderSection:AddToggle({
                 end
             end
 
-            print("GUN")
             wait(1)
         end
 

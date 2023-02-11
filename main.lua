@@ -24,7 +24,7 @@ for k, v in pairs(gameIDs) do
 end
 
 local PepsisWorld = mainLibrary:CreateWindow({
-    Name = "drakeware",
+    Name = "drakeware"
 })
 
 local GeneralTab = PepsisWorld:CreateTab({
