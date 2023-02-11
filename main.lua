@@ -1,4 +1,4 @@
-local library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
+library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
 -- local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/d.lua", true))()
 local Wait = library.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
 local pname = game.Players.LocalPlayer.Name
@@ -15,7 +15,7 @@ local sheriffGlow
 local callOutToggle = false
 local foundGun = false
 
-local PepsisWorld = library:CreateWindow({
+PepsisWorld = library:CreateWindow({
     Name = "drakeware",
 })
 
@@ -257,5 +257,7 @@ GunFinderSection:AddButton({
             local lplayer = workspace:FindFirstChild(pname)
             lplayer.HumanoidRootPart.CFrame = workspace.GunDrop.CFrame
         end
+
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/murdermystery.lua", true))()
     end
 })
