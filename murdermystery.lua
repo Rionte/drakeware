@@ -32,6 +32,10 @@ local BhopSection = GeneralTab:CreateSection({
     Name = "Bhop"
 })
 
+local OtherSection = GeneralTab:CreateSection({
+    Name = "Other"
+})
+
 local MurderFinderSection = MMTab:CreateSection({
     Name = "Murderer Finder"
 })
@@ -154,26 +158,38 @@ BhopSection:AddSlider({
     end
 })
 
+OtherSection:AddToggle({
+    Name = "No Collisions",
+    Callback = function(state)
+        if state then
+            lplayer.HumanoidRootPart.CanCollide = false
+        else
+            lplayer.HumanoidRootPart.CanCollide = true
+        end
+    end
+})
+
 MurderFinderSection:AddToggle({
     Name = "Murderer ESP",
-    Keybind = 1,
     Callback = function(state)
         tempState = state
         local lplayer = workspace:FindFirstChild(pname)
         while tempState do
             for _, player in game.Players:GetPlayers() do
-                if player.Character:FindFirstChild("Knife") then
-                    if not player.Character:FindFirstChildOfClass("Highlight") then
-                        glow = Instance.new("Highlight")
-                        glow.Parent = player.Character
-
-                        if callOutToggle then
-                            local args = {
-                                [1] = player.Name .. " is the murderer!",
-                                [2] = "normalchat"
-                            }
-                            
-                            game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))                            
+                if player.Character then
+                    if player.Character:FindFirstChild("Knife") then
+                        if not player.Character:FindFirstChildOfClass("Highlight") then
+                            glow = Instance.new("Highlight")
+                            glow.Parent = player.Character
+    
+                            if callOutToggle then
+                                local args = {
+                                    [1] = player.Name .. " is the murderer!",
+                                    [2] = "normalchat"
+                                }
+                                
+                                game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))                            
+                            end
                         end
                     end
                 end
@@ -203,11 +219,13 @@ SheriffFinderSection:AddToggle({
         local lplayer = workspace:FindFirstChild(pname)
         while tempState do
             for _, player in game.Players:GetPlayers() do
-                if player.Character:FindFirstChild("Gun") then
-                    if not player.Character:FindFirstChildOfClass("Highlight") then
-                        sheriffGlow = Instance.new("Highlight")
-                        sheriffGlow.FillColor = Color3.new(0, 255, 0)
-                        sheriffGlow.Parent = player.Character
+                if player.Character then
+                    if player.Character:FindFirstChild("Gun") then
+                        if not player.Character:FindFirstChildOfClass("Highlight") then
+                            sheriffGlow = Instance.new("Highlight")
+                            sheriffGlow.FillColor = Color3.new(0, 255, 0)
+                            sheriffGlow.Parent = player.Character
+                        end
                     end
                 end
             end
@@ -234,6 +252,11 @@ GunFinderSection:AddToggle({
                     gunGlow.FillColor = Color3.new(0, 0, 255)
                     gunGlow.Parent = workspace.GunDrop
                     foundGun = true
+                    for i = 0, 10 do
+                        library.Notify({
+                            Text = "GUN DROPPED"
+                        })
+                    end
                 end
             end
 
@@ -243,6 +266,7 @@ GunFinderSection:AddToggle({
 
         if tempState == false then
             foundGun = false
+            gunGlow:Destroy()
         end
     end
 })

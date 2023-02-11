@@ -28,6 +28,10 @@ local BhopSection = GeneralTab:CreateSection({
     Name = "Bhop"
 })
 
+local OtherSection = GeneralTab:CreateSection({
+    Name = "Other"
+})
+
 local loadGameSection = GeneralTab:CreateSection({
     Name = "Load Game"
 })
@@ -156,5 +160,16 @@ BhopSection:AddSlider({
     Max = 100,
     Callback = function(v)
         bhopSpeed = v
+    end
+})
+
+OtherSection:AddToggle({
+    Name = "No Collisions",
+    Callback = function(state)
+        if state then
+            lplayer.HumanoidRootPart.CanCollide = false
+        else
+            lplayer.HumanoidRootPart.CanCollide = true
+        end
     end
 })
