@@ -12,6 +12,17 @@ local gameList = {
     "MM"
 }
 
+local gameIDs = {
+    MM = 142823291
+}
+
+for k, v in pairs(gameIDs) do
+    if game.PlaceId == v then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/" .. v ..  ".lua", true))()
+        mainLibrary.unload()
+    end
+end
+
 local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware",
 })
@@ -32,29 +43,8 @@ local OtherSection = GeneralTab:CreateSection({
     Name = "Other"
 })
 
-local loadGameSection = GeneralTab:CreateSection({
-    Name = "Load Game"
-})
-
 local UnloadSection = GeneralTab:CreateSection({
     Name = "Unload"
-})
-
-loadGameSection:AddDropdown({
-    Name = "Game",
-    List = gameList,
-    Callback = function(v)
-        selectedGame = v
-        print(selectedGame)
-    end
-})
-
-loadGameSection:AddButton({
-    Name = "Add Game",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/murdermystery.lua", true))()
-        mainLibrary.unload()
-    end
 })
 
 UnloadSection:AddButton({
