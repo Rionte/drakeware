@@ -1,30 +1,23 @@
-library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
--- local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/d.lua", true))()
-local Wait = library.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
+local mainLibrary = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
+local Wait = mainLibrary.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
 local pname = game.Players.LocalPlayer.Name
 local lplayer = workspace:FindFirstChild(pname)
-local lc = 0
 local inp = game:GetService("UserInputService")
-local rs = game:GetService("RunService")
 local flySpeed = 100
 local flySteps = 2
 local bhopSpeed = 30
-local glow
-local gunGlow
-local sheriffGlow
-local callOutToggle = false
-local foundGun = false
+local selectedGame = "MM"
 
-PepsisWorld = library:CreateWindow({
+local gameList = {
+    "MM"
+}
+
+local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware",
 })
 
 local GeneralTab = PepsisWorld:CreateTab({
     Name = "General"
-})
-
-local MMTab = PepsisWorld:CreateTab({
-    Name = "MM"
 })
 
 local FlySection = GeneralTab:CreateSection({
@@ -35,26 +28,34 @@ local BhopSection = GeneralTab:CreateSection({
     Name = "Bhop"
 })
 
-local MurderFinderSection = MMTab:CreateSection({
-    Name = "Murderer Finder"
-})
-
-local SheriffFinderSection = MMTab:CreateSection({
-    Name = "Sheriff Finder"
-})
-
-local GunFinderSection = MMTab:CreateSection({
-    Name = "Gun Drop Finder"
+local loadGameSection = GeneralTab:CreateSection({
+    Name = "Load Game"
 })
 
 local UnloadSection = GeneralTab:CreateSection({
     Name = "Unload"
 })
 
+loadGameSection:AddDropdown({
+    Name = "Game",
+    List = gameList,
+    Callback = function(v)
+        selectedGame = v
+        print(selectedGame)
+    end
+})
+
+loadGameSection:AddButton({
+    Name = "Add Game",
+    Callback = function()
+        mainLibrary.unload()
+    end
+})
+
 UnloadSection:AddButton({
     Name = "Unload UI",
     Callback = function()
-        library.unload()
+        mainLibrary.unload()
     end
 })
 
@@ -154,110 +155,5 @@ BhopSection:AddSlider({
     Max = 100,
     Callback = function(v)
         bhopSpeed = v
-    end
-})
-
-MurderFinderSection:AddToggle({
-    Name = "Murderer ESP",
-    Keybind = 1,
-    Callback = function(state)
-        tempState = state
-        local lplayer = workspace:FindFirstChild(pname)
-        while tempState do
-            for _, player in game.Players:GetPlayers() do
-                if player.Character:FindFirstChild("Knife") then
-                    if not player.Character:FindFirstChildOfClass("Highlight") then
-                        glow = Instance.new("Highlight")
-                        glow.Parent = player.Character
-
-                        if callOutToggle then
-                            local args = {
-                                [1] = player.Name .. " is the murderer!",
-                                [2] = "normalchat"
-                            }
-                            
-                            game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))                            
-                        end
-                    end
-                end
-            end
-
-            print("MURDER")
-            wait(0.2)
-        end
-
-        if tempState == false then
-            glow:Destroy()
-        end
-    end
-})
-
-MurderFinderSection:AddToggle({
-    Name = "Auto Call Out",
-    Callback = function(state)
-        callOutToggle = state
-    end
-})
-
-SheriffFinderSection:AddToggle({
-    Name = "Sheriff ESP",
-    Callback = function(state)
-        tempState = state
-        local lplayer = workspace:FindFirstChild(pname)
-        while tempState do
-            for _, player in game.Players:GetPlayers() do
-                if player.Character:FindFirstChild("Gun") then
-                    if not player.Character:FindFirstChildOfClass("Highlight") then
-                        sheriffGlow = Instance.new("Highlight")
-                        sheriffGlow.FillColor = Color3.new(0, 255, 0)
-                        sheriffGlow.Parent = player.Character
-                    end
-                end
-            end
-
-            print("SHERIFF")
-            wait(1)
-        end
-
-        if tempState == false then
-            sheriffGlow:Destroy()
-        end
-    end
-})
-
-GunFinderSection:AddToggle({
-    Name = "Gun Drop ESP",
-    Callback = function(state)
-        tempState = state
-        local lplayer = workspace:FindFirstChild(pname)
-        while tempState do
-            if workspace:FindFirstChild("GunDrop") then
-                if not workspace.GunDrop:FindFirstChildOfClass("Highlight") then
-                    gunGlow = Instance.new("Highlight")
-                    gunGlow.FillColor = Color3.new(0, 0, 255)
-                    gunGlow.Parent = workspace.GunDrop
-                    foundGun = true
-                end
-            end
-
-            print("GUN")
-            wait(1)
-        end
-
-        if tempState == false then
-            foundGun = false
-        end
-    end
-})
-
-GunFinderSection:AddButton({
-    Name = "Teleport To Gun",
-    Callback = function()
-        if foundGun then
-            local lplayer = workspace:FindFirstChild(pname)
-            lplayer.HumanoidRootPart.CFrame = workspace.GunDrop.CFrame
-        end
-
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Rionte/drakeware/main/murdermystery.lua", true))()
     end
 })
