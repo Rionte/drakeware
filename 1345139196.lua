@@ -17,21 +17,29 @@ local GeneralTab = PepsisWorld:CreateTab({
     Name = "General"
 })
 
-local FlySection = GeneralTab:CreateSection({
-    Name = "Fly"
+    local FlySection = GeneralTab:CreateSection({
+        Name = "Fly"
+    })
+
+    local BhopSection = GeneralTab:CreateSection({
+        Name = "Bhop"
+    })
+
+    local OtherSection = GeneralTab:CreateSection({
+        Name = "Other"
+    })
+
+    local UnloadSection = GeneralTab:CreateSection({
+        Name = "Unload"
+    })
+
+local THSTab = PepsisWorld:CreateTab({
+    Name = "Treasure Hunt Simulator"
 })
 
-local BhopSection = GeneralTab:CreateSection({
-    Name = "Bhop"
-})
-
-local OtherSection = GeneralTab:CreateSection({
-    Name = "Other"
-})
-
-local UnloadSection = GeneralTab:CreateSection({
-    Name = "Unload"
-})
+    local autoTunnelSection = THSTab:CreateSection({
+        Name = "Auto Tunnel"
+    })
 
 UnloadSection:AddButton({
     Name = "Unload UI",
@@ -168,6 +176,19 @@ OtherSection:AddToggle({
             lplayer.HumanoidRootPart.CanCollide = false
         else
             lplayer.HumanoidRootPart.CanCollide = true
+        end
+    end
+})
+
+autoTunnelSection:AddToggle({
+    Name = "Auto Tunnel",
+    Keybind = 1,
+    Callback = function(state)
+        tempState = state
+        while tempState do
+            
+
+            wait()
         end
     end
 })

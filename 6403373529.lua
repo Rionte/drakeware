@@ -1,3 +1,5 @@
+-- Slap Battles
+
 local mainLibrary = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
 local Wait = mainLibrary.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
 local pname = game.Players.LocalPlayer.Name

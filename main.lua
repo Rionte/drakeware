@@ -6,10 +6,12 @@ local inp = game:GetService("UserInputService")
 local flySpeed = 100
 local flySteps = 2
 local bhopSpeed = 30
+local esp
 
 local gameIDs = {
-    142823291,
-    1345139196
+    142823291, -- Murder Mystery
+    1345139196, -- Treasure Hunt
+    6403373529, -- Slap Battles
 }
 
 for _, v in pairs(gameIDs) do
@@ -156,6 +158,7 @@ OtherSection:AddSlider({
     Min = 0,
     Max = 100,
     Callback = function(v)
+        local lplayer = workspace:FindFirstChild(pname)
         lplayer.Humanoid.WalkSpeed = v
     end
 })
@@ -167,6 +170,7 @@ OtherSection:AddSlider({
     Min = 0,
     Max = 100,
     Callback = function(v)
+        local lplayer = workspace:FindFirstChild(pname)
         lplayer.Humanoid.JumpPower = v
     end
 })
@@ -178,6 +182,58 @@ OtherSection:AddToggle({
             lplayer.HumanoidRootPart.CanCollide = false
         else
             lplayer.HumanoidRootPart.CanCollide = true
+        end
+    end
+})
+
+OtherSection:AddToggle({
+    Name = "Infinite Jump",
+    Callback = function(state)
+        game:GetService("UserInputService").JumpRequest:connect(function()
+            if state then
+                game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+            end
+        end)
+
+        if not state then
+            game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Standing")
+        end
+    end
+})
+
+OtherSection:AddToggle({
+    Name = "ESP",
+    Callback = function(state)
+        while state do
+            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                if not player.Character:FindFirstChildOfClass("Highlight") then
+                    esp = Instance.new("Highlight")
+                    esp.Name = "esp"
+                    esp.FillColor = Color3.new(0, 0, 255)
+                    esp.Parent = player.Character
+                end
+            end
+            
+            wait(5)
+        end
+
+        if not state then
+            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                if player.Character:FindFirstChildOfClass("Highlight") then
+                    player.Character.esp:Destroy()
+                end
+            end
+        end
+    end
+})
+
+OtherSection:AddToggle({
+    Name = "No Collisions",
+    Callback = function(state)
+        if state then
+            lplayer.HumanoidRootPart.Anchored = true
+        else
+            lplayer.HumanoidRootPart.Anchored = false
         end
     end
 })
