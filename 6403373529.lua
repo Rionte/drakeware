@@ -9,6 +9,7 @@ local flySpeed = 100
 local flySteps = 2
 local bhopSpeed = 30
 local esp
+local closest
 
 local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware"
@@ -37,6 +38,10 @@ local GeneralTab = PepsisWorld:CreateTab({
 local SBTab = PepsisWorld:CreateTab({
     Name = "Slap Battles"
 })
+
+    local KASection = SBTab:CreateSection({
+        Name = "Killaura"
+    })
 
 UnloadSection:AddButton({
     Name = "Unload UI",
@@ -107,7 +112,6 @@ BhopSection:AddToggle({
     Keybind = 1,
     Callback = function(state)
         tempState = state
-        -- temp = false
         while tempState do
             local lplayer = workspace:FindFirstChild(pname)
             lplayer.Humanoid.Jump = true
@@ -227,6 +231,43 @@ OtherSection:AddToggle({
             lplayer.HumanoidRootPart.Anchored = true
         else
             lplayer.HumanoidRootPart.Anchored = false
+        end
+    end
+})
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+KASection:AddToggle({
+    Name = "Killaura",
+    Callback = function(state)
+        local part = game:GetService("Workspace").Lobby.GloveStands.Diamond.SlapsInfoPart
+        tempState = state
+        while tempState do
+            tempState = state
+            
+            closest = "";
+            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                if player.Name == game.Players.LocalPlayer.Name == false then
+                    if closest == "" then
+                        closest = player
+                    else
+                        if player:DistanceFromCharacter(lplayer.HumanoidRootPart.Position) < game.Players.LocalPlayer:DistanceFromCharacter(closest.Character.HumanoidRootPart.Position) then
+                            closest = player
+                        end
+                    end
+                end
+            end
+
+            local closestH = closest.Character.HumanoidRootPart
+            lplayer.HumanoidRootPart.CFrame = CFrame.lookAt(lplayer.HumanoidRootPart.Position, Vector3.new(closestH.Position.X, lplayer.HumanoidRootPart.Position.Y, closestH.Position.Z))
+
+            local args = {
+                [1] = game:GetService("Players"):FindFirstChild(closest.Name).Character:FindFirstChild("Head")
+            }
+
+            game:GetService("ReplicatedStorage").b:FireServer(unpack(args))
+
+            wait()
         end
     end
 })
