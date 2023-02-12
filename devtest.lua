@@ -322,3 +322,48 @@ local GeneralTab = PepsisWorld:CreateTab({
                 mainLibrary.unload()
             end
         })
+
+    local KASection = GeneralTab:CreateSection({
+        Name = "Killaura"
+    })
+
+        KASection:AddToggle({
+            Name = "Killaura",
+            Keybind = 1,
+            Callback = function(state)
+                local part = game:GetService("Workspace").Lobby.GloveStands.Diamond.SlapsInfoPart
+                tempState = state
+                while tempState do
+                    tempState = state
+                    
+                    closest = "";
+                    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                        if player.Name == game.Players.LocalPlayer.Name == false then
+                            if closest == "" then
+                                closest = player
+                            else
+                                if player:DistanceFromCharacter(lplayer.HumanoidRootPart.Position) < game.Players.LocalPlayer:DistanceFromCharacter(closest.Character.HumanoidRootPart.Position) then
+                                    closest = player
+                                end
+                            end
+        
+                            local mousePosition = mouse.Hit.Position
+                            if cclosest == "" then
+                                cclosest = player
+                                cdistance = (cclosest.HumanoidRootPart.Position - mousePosition).magnitude
+                            else
+                                if (player.HumanoidRootPart.Position - mousePosition).magnitude < cdistance then
+                                    cclosest = player
+                                    cdistance = (player.HumanoidRootPart.Position - mousePosition).magnitude
+                                end
+                            end
+                        end
+                    end
+        
+                    local closestH = closest.Character.HumanoidRootPart
+                    lplayer.HumanoidRootPart.CFrame = CFrame.lookAt(lplayer.HumanoidRootPart.Position, Vector3.new(closestH.Position.X, lplayer.HumanoidRootPart.Position.Y, closestH.Position.Z))
+        
+                    wait()
+                end
+            end
+        })

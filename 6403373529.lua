@@ -8,8 +8,11 @@ local inp = game:GetService("UserInputService")
 local flySpeed = 100
 local flySteps = 2
 local bhopSpeed = 30
+local mouse = game.Players.LocalPlayer:GetMouse()
 local esp
 local closest
+local cclosest
+local cdistance
 
 local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware"
@@ -239,6 +242,7 @@ OtherSection:AddToggle({
 
 KASection:AddToggle({
     Name = "Killaura",
+    Keybind = 1,
     Callback = function(state)
         local part = game:GetService("Workspace").Lobby.GloveStands.Diamond.SlapsInfoPart
         tempState = state
@@ -253,6 +257,17 @@ KASection:AddToggle({
                     else
                         if player:DistanceFromCharacter(lplayer.HumanoidRootPart.Position) < game.Players.LocalPlayer:DistanceFromCharacter(closest.Character.HumanoidRootPart.Position) then
                             closest = player
+                        end
+                    end
+
+                    local mousePosition = mouse.Hit.Position
+                    if cclosest == "" then
+                        cclosest = player
+                        cdistance = (cclosest.HumanoidRootPart.Position - mousePosition).magnitude
+                    else
+                        if (player.HumanoidRootPart.Position - mousePosition).magnitude < cdistance then
+                            cclosest = player
+                            cdistance = (player.HumanoidRootPart.Position - mousePosition).magnitude
                         end
                     end
                 end
