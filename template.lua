@@ -16,21 +16,21 @@ local GeneralTab = PepsisWorld:CreateTab({
     Name = "General"
 })
 
-local FlySection = GeneralTab:CreateSection({
-    Name = "Fly"
-})
+    local FlySection = GeneralTab:CreateSection({
+        Name = "Fly"
+    })
 
-local BhopSection = GeneralTab:CreateSection({
-    Name = "Bhop"
-})
+    local BhopSection = GeneralTab:CreateSection({
+        Name = "Bhop"
+    })
 
-local OtherSection = GeneralTab:CreateSection({
-    Name = "Other"
-})
+    local OtherSection = GeneralTab:CreateSection({
+        Name = "Other"
+    })
 
-local UnloadSection = GeneralTab:CreateSection({
-    Name = "Unload"
-})
+    local UnloadSection = GeneralTab:CreateSection({
+        Name = "Unload"
+    })
 
 UnloadSection:AddButton({
     Name = "Unload UI",
