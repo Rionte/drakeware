@@ -12,11 +12,13 @@ local cclosest
 local cdistance
 local clickDelay
 local packet
+local tpTarget = game.Players.LocalPlayer.Name
 
 local gameIDs = {
     142823291, -- Murder Mystery
     1345139196, -- Treasure Hunt
     6403373529, -- Slap Battles
+    10108131074, -- Mow The Lawn!
 }
 
 for _, v in pairs(gameIDs) do
@@ -216,6 +218,33 @@ local GeneralTab = PepsisWorld:CreateTab({
             Max = 5,
             Callback = function(v)
                 clickDelay = v
+            end
+        })
+
+    local TPSection = GeneralTab:CreateSection({
+        Name = "Teleport To Player",
+        Side = "Right"
+    })
+
+        TPSection:AddTextbox({
+            Name = "Player",
+            Value = "",
+            Placeholder = "Player Name",
+            Callback = function(v)
+                tpTarget = v
+                if workspace:FindFirstChild(tpTarget).HumanoidRootPart then
+                    print("YES")
+                else
+                    print("NO")
+                end
+            end
+        })
+
+        TPSection:AddButton({
+            Name = "Teleport",
+            Callback = function()
+                local lplayer = workspace:FindFirstChild(pname)
+                lplayer.HumanoidRootPart.CFrame = workspace:FindFirstChild(tpTarget):FindFirstChild("HumanoidRootPart").CFrame
             end
         })
 

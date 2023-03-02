@@ -14,6 +14,20 @@ local clickDelay
 local packet
 local tpTarget = game.Players.LocalPlayer.Name
 
+local worlds = {
+    "1",
+    "2",
+    "3"
+}
+local world
+
+local zones = {}
+local zone
+
+for i = 1, 30 do
+    table.insert(zones, i)
+end
+
 local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware"
 })
@@ -340,3 +354,95 @@ local GeneralTab = PepsisWorld:CreateTab({
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local MowTab = PepsisWorld:CreateTab({
+    Name = "Mow The Lawn"
+})
+
+    local SwapZones = MowTab:CreateSection({
+        Name = "Swap Zones"
+    })
+
+        SwapZones:AddDropdown({
+            Name = "Swap World",
+            List = worlds,
+            Value = worlds[1],
+            Callback = function(v)
+                world = v
+            end
+        })
+
+        SwapZones:AddDropdown({
+            Name = "Swap Zone",
+            List = zones,
+            Value = zones[1],
+            Callback = function(v)
+                zone = v
+            end
+        })
+
+    local AutoDamage = MowTab:CreateSection({
+        Name = "Auto-Damage"
+    })
+
+        AutoDamage:AddToggle({
+            Name = "Auto-Damage",
+            Callback = function(state)
+                tempState = state
+                while tempState do
+                    tempState = state
+
+                    for _, v in pairs(workspace.Map.Zones:FindFirstChild(world):FindFirstChild(zone).Obstacles:GetChildren()) do
+                        local args = {
+                            [1] = workspace.Map.Zones:FindFirstChild(world):FindFirstChild(zone).Obstacles:FindFirstChild(v.name),
+                            [2] = true
+                        }
+
+                        game:GetService("ReplicatedStorage").Remotes.Game.ClientToggleDamageObstacle:FireServer(unpack(args))
+
+                        local args = {
+                            [1] = workspace.Map.Zones:FindFirstChild(world):FindFirstChild(zone).Obstacles:FindFirstChild(v.name),
+                            [2] = true
+                        }
+
+                        game:GetService("ReplicatedStorage").Remotes.Game.Pet.ClientToggleTargetPetsAttackObstacle:FireServer(unpack(args))
+                    end
+
+                    wait(1)
+                end
+            end
+        })
+
+    local ExtraSection = MowTab:CreateSection({
+        Name = ""
+    })
+    
+        ExtraSection:AddToggle({
+            Name = "Auto Mow",
+            Callback = function(state)
+                tempState = state
+                while tempState do
+                    tempState = state
+
+                    local args = {
+                        [1] = tostring(zone)
+                    }
+
+                    game:GetService("ReplicatedStorage").Remotes.Game.ClientMowGrass:FireServer(unpack(args))
+
+
+                    wait()
+                end
+            end
+        })
+
+        ExtraSection:AddButton({
+            Name = "Refill",
+            Callback = function()
+                local args = {
+                    [1] = workspace.Map.Zones:FindFirstChild(world):FindFirstChild(zone).GasStation.GasPumps,
+                    [2] = true
+                }
+
+                game:GetService("ReplicatedStorage").Remotes.Game.ClientToggleUseGasStation:FireServer(unpack(args))
+            end
+        })

@@ -13,6 +13,7 @@ local esp
 local closest
 local cclosest
 local cdistance
+local dir
 
 local PepsisWorld = mainLibrary:CreateWindow({
     Name = "drakeware"
@@ -240,49 +241,73 @@ OtherSection:AddToggle({
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-KASection:AddToggle({
+function kaFunc()
+    closest = "";
+    local lplayer = workspace:FindFirstChild(pname)
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player.Name == game.Players.LocalPlayer.Name == false then
+            if closest == "" then
+                closest = player
+            else
+                if player:DistanceFromCharacter(lplayer.HumanoidRootPart.Position) < game.Players.LocalPlayer:DistanceFromCharacter(closest.Character.HumanoidRootPart.Position) then
+                    closest = player
+                end
+            end
+        end
+    end
+
+    local closestH = closest.Character.HumanoidRootPart
+    lplayer.HumanoidRootPart.CFrame = CFrame.lookAt(lplayer.HumanoidRootPart.Position, Vector3.new(closestH.Position.X, lplayer.HumanoidRootPart.Position.Y, closestH.Position.Z))
+    dir = CFrame.lookAt(lplayer.HumanoidRootPart.Position, Vector3.new(closestH.Position.X, lplayer.HumanoidRootPart.Position.Y, closestH.Position.Z)).LookVector
+
+    local args = {
+        [1] = game:GetService("Players"):FindFirstChild(closest.Name).Character:FindFirstChild("Head")
+    }
+
+    game:GetService("ReplicatedStorage").b:FireServer(unpack(args))
+end
+
+local kaToggle = KASection:AddToggle({
     Name = "Killaura",
     Keybind = 1,
     Callback = function(state)
-        local part = game:GetService("Workspace").Lobby.GloveStands.Diamond.SlapsInfoPart
         tempState = state
+
         while tempState do
+            local lplayer = workspace:FindFirstChild(pname)
             tempState = state
             
-            closest = "";
-            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-                if player.Name == game.Players.LocalPlayer.Name == false then
-                    if closest == "" then
-                        closest = player
-                    else
-                        if player:DistanceFromCharacter(lplayer.HumanoidRootPart.Position) < game.Players.LocalPlayer:DistanceFromCharacter(closest.Character.HumanoidRootPart.Position) then
-                            closest = player
-                        end
-                    end
-
-                    local mousePosition = mouse.Hit.Position
-                    if cclosest == "" then
-                        cclosest = player
-                        cdistance = (cclosest.HumanoidRootPart.Position - mousePosition).magnitude
-                    else
-                        if (player.HumanoidRootPart.Position - mousePosition).magnitude < cdistance then
-                            cclosest = player
-                            cdistance = (player.HumanoidRootPart.Position - mousePosition).magnitude
-                        end
-                    end
+            if pcall(kaFunc) and lplayer.Humanoid:GetState("Dead") then
+                if not inp:IsKeyDown(Enum.KeyCode.Space) then
+                    lplayer.Humanoid:ChangeState("GettingUp")
                 end
+
+                if inp:IsKeyDown(Enum.KeyCode.W) then
+                    lplayer.HumanoidRootPart.CFrame += Vector3.new(-1, 0, 0)
+                end
+                if inp:IsKeyDown(Enum.KeyCode.S) then
+                    lplayer.HumanoidRootPart.CFrame += Vector3.new(1, 0, 0)
+                end
+                if inp:IsKeyDown(Enum.KeyCode.A) then
+                    lplayer.HumanoidRootPart.CFrame += Vector3.new(0, 0, 1)
+                end
+                if inp:IsKeyDown(Enum.KeyCode.D) then
+                    lplayer.HumanoidRootPart.CFrame += Vector3.new(0, 0, -1)
+                end
+                if inp:IsKeyDown(Enum.KeyCode.Q) then
+                    lplayer.HumanoidRootPart:ApplyImpulse(dir * 200)
+                end
+                
+                kaFunc()
+            else
+                lplayer.HumanoidRootPart.Anchored = false
             end
 
-            local closestH = closest.Character.HumanoidRootPart
-            lplayer.HumanoidRootPart.CFrame = CFrame.lookAt(lplayer.HumanoidRootPart.Position, Vector3.new(closestH.Position.X, lplayer.HumanoidRootPart.Position.Y, closestH.Position.Z))
-
-            local args = {
-                [1] = game:GetService("Players"):FindFirstChild(closest.Name).Character:FindFirstChild("Head")
-            }
-
-            game:GetService("ReplicatedStorage").b:FireServer(unpack(args))
-
             wait()
+        end
+
+        if not state then
+            lplayer.HumanoidRootPart.Anchored = false
         end
     end
 })
