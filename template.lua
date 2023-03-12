@@ -6,10 +6,7 @@ local inp = game:GetService("UserInputService")
 local flySpeed = 100
 local flySteps = 2
 local bhopSpeed = 30
-local mouse = game.Players.LocalPlayer:GetMouse()
 local esp
-local cclosest
-local cdistance
 local clickDelay
 local packet
 local tpTarget = game.Players.LocalPlayer.Name
